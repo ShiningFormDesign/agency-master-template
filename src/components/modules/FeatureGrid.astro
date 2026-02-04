@@ -4,7 +4,7 @@ import { sanityClient } from "sanity:client";
 
 // 1. Fetch the data from Sanity
 const data = await sanityClient.fetch(`
-  *[_type == "features"][0]
+  *[_type == "features"] | order(_updatedAt desc)[0]
 `);
 
 // 2. Fallback: If Sanity is empty, hide the section (or show nothing)

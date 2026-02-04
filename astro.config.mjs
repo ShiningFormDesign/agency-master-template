@@ -12,7 +12,7 @@ export default defineConfig({
       projectId: process.env.PUBLIC_SANITY_PROJECT_ID,
       // CHANGE 2: Use process.env for the Dataset
       dataset: process.env.PUBLIC_SANITY_DATASET || 'production',
-      useCdn: true,
+      useCdn: false,
     }),
   ],
 });
