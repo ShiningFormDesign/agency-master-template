@@ -1,0 +1,44 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/global/Navbar.astro';
+import HeroSimple from '../components/modules/HeroSimple.astro';
+import FeatureGrid from '../components/modules/FeatureGrid.astro';
+import MasonryGallery from '../components/modules/MasonryGallery.astro'; // <--- Import the Gallery
+
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+
+// 1. Setup the Image Helper
+const builder = imageUrlBuilder(sanityClient);
+function urlFor(source) {
+  return builder.image(source);
+}
+
+// 2. Fetch the data (including the new bgImage)
+const heroData = await sanityClient.fetch(`*[_type == "hero"][0]`);
+
+// 3. Generate the actual URL string (if an image exists)
+const heroImage = heroData.bgImage ? urlFor(heroData.bgImage).width(2000).url() : null;
+---
+
+<BaseLayout title="My Modular Studio">
+  
+  {/* The Navbar now fetches its own data, so we don't need to pass props */}
+  <Navbar />
+
+  {heroData && (
+    <HeroSimple 
+      headline={heroData.headline}
+      subheadline={heroData.subheadline}
+      buttonText={heroData.buttonText}
+      backgroundImage={heroImage}
+    />
+  )}
+
+  {/* The New Gallery Module */}
+  <MasonryGallery />
+
+  <FeatureGrid />
+  
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+// src/components/modules/FeatureGrid.astro
+import { sanityClient } from "sanity:client";
+
+// 1. Fetch the data from Sanity
+const data = await sanityClient.fetch(`
+  *[_type == "features"][0]
+`);
+
+// 2. Fallback: If Sanity is empty, hide the section (or show nothing)
+if (!data) return null;
+---
+
+<section class="py-24 px-6 bg-gray-50">
+  <div class="max-w-7xl mx-auto">
+    
+    {/* Dynamic Headline from Sanity */}
+    <h2 class="text-3xl font-bold text-center mb-16 tracking-tight">
+      {data.headline}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      {/* Loop through the items from Sanity */}
+      {data.items && data.items.map((item, index) => (
+        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 relative">
+          
+          <span class="absolute -top-4 -left-4 w-10 h-10 bg-black text-white flex items-center justify-center rounded-full font-bold text-lg">
+            {index + 1}
+          </span>
+          
+          <h3 class="text-xl font-bold mb-3 text-gray-900">{item.title}</h3>
+          <p class="text-gray-600 leading-relaxed">
+            {item.description}
+          </p>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+</section>

@@ -1,0 +1,60 @@
+---
+// src/components/global/Navbar.astro
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+
+// 1. Prepare the Image Builder
+// (This converts the weird Sanity image reference into a real URL)
+const builder = imageUrlBuilder(sanityClient);
+function urlFor(source) {
+  return builder.image(source);
+}
+
+// 2. Fetch the Data
+// We use [0] because we only want the FIRST document that matches (there is only one settings file)
+const data = await sanityClient.fetch(`
+  *[_type == "siteSettings"][0]{
+    title,
+    logo,
+    navLinks[] {
+      label,
+      url
+    }
+  }
+`);
+
+// 3. Fallback Safety
+// If the data hasn't loaded yet, prevent the site from crashing
+const settings = data || { title: "My Studio", navLinks: [] };
+---
+
+<nav class="w-full py-4 px-6 border-b border-gray-200 bg-white">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    
+    <a href="/" class="font-bold text-xl tracking-tight hover:opacity-75 transition-opacity">
+      {settings.logo ? (
+        <img 
+          src={urlFor(settings.logo).height(80).url()} 
+          alt={settings.title} 
+          class="h-10 w-auto object-contain" 
+        />
+      ) : (
+        <span>{settings.title}</span>
+      )}
+    </a>
+
+    <ul class="flex gap-6">
+      {settings.navLinks && settings.navLinks.map((link) => (
+        <li>
+          <a 
+            href={link.url} 
+            class="text-sm font-medium text-gray-600 hover:text-black transition-colors"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</nav>

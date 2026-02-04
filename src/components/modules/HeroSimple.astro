@@ -1,0 +1,23 @@
+---
+// src/components/modules/HeroSimple.astro
+const { headline, subheadline, buttonText, backgroundImage } = Astro.props;
+---
+
+<section 
+  class="w-full py-32 bg-gray-900 border-b border-gray-200 bg-cover bg-center relative"
+  style={`background-image: url('${backgroundImage}');`}
+>
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
+    <h1 class="text-5xl font-bold tracking-tight text-white mb-6 drop-shadow-md">
+      {headline}
+    </h1>
+    <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto drop-shadow-md">
+      {subheadline}
+    </p>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition shadow-lg">
+      {buttonText}
+    </button>
+  </div>
+</section>
