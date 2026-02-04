@@ -6,7 +6,7 @@ import imageUrlBuilder from "@sanity/image-url";
 // 1. Prepare the Image Builder
 // (This converts the weird Sanity image reference into a real URL)
 const builder = imageUrlBuilder(sanityClient);
-function urlFor(source) {
+function urlFor(source: any) {
   return builder.image(source);
 }
 
@@ -44,7 +44,7 @@ const settings = data || { title: "My Studio", navLinks: [] };
     </a>
 
     <ul class="flex gap-6">
-      {settings.navLinks && settings.navLinks.map((link) => (
+      {settings.navLinks && settings.navLinks.map((link: any) => (
         <li>
           <a 
             href={link.url} 

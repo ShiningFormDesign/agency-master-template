@@ -1,5 +1,3 @@
-// studio/schemaTypes/siteSettings.js
-
 export default {
   name: 'siteSettings',
   title: 'Site Settings',

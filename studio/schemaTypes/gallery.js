@@ -1,8 +1,7 @@
-// studio/schemaTypes/gallery.js
 export default {
   name: 'gallery',
   title: 'Gallery Module',
-  type: 'document', // We will change this to 'object' later for the Page Builder, but 'document' allows testing now.
+  type: 'document',
   fields: [
     {
       name: 'headline',
@@ -24,7 +23,6 @@ export default {
               type: 'string',
               description: 'Important for SEO and accessiblity.',
             },
-            // We can add a 'caption' field here later if needed
           ],
         },
       ],

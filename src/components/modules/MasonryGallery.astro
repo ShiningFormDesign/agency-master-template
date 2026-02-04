@@ -1,91 +1,75 @@
 ---
-// src/components/modules/MasonryGallery.astro
 import { sanityClient } from "sanity:client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
-const builder = imageUrlBuilder(sanityClient);
-function urlFor(source) {
+const builder = createImageUrlBuilder(sanityClient);
+function urlFor(source: any) {
   return builder.image(source);
 }
 
 const { data } = Astro.props;
 const galleryData = data || await sanityClient.fetch(`*[_type == "gallery"][0]`);
-
-if (!galleryData) return null;
+const hasGallery = !!galleryData;
 ---
 
-<section class="py-20 px-6 bg-white">
-  <div class="max-w-7xl mx-auto">
-    
-    {galleryData.headline && (
-      <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight">
-        {galleryData.headline}
-      </h2>
-    )}
+{hasGallery && (
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+      {galleryData.headline && (
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight">
+          {galleryData.headline}
+        </h2>
+      )}
 
-    {/* MASONRY GRID */}
-    <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-      
-      {galleryData.images && galleryData.images.map((image) => (
-        <div class="break-inside-avoid cursor-zoom-in group">
-          <img
-            src={urlFor(image).width(600).url()} 
-            data-full={urlFor(image).width(1200).url()}
-            alt={image.alt || "Gallery image"}
-            /* SECURITY ADDITIONS:
-               1. draggable="false": Prevents dragging to desktop
-               2. oncontextmenu="return false": Disables Right Click menu
-               3. select-none: Prevents highlighting
-            */
-            draggable="false"
-            oncontextmenu="return false;"
-            class="w-full h-auto rounded-lg shadow-sm group-hover:shadow-md transition-all duration-300 select-none"
-            loading="lazy" 
-          />
-        </div>
-      ))}
-
+      <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+        {galleryData.images?.map((image: any) => (
+          <div class="break-inside-avoid cursor-zoom-in group">
+            <img
+              src={urlFor(image).width(600).url()}
+              data-full={urlFor(image).width(1200).url()}
+              alt={image?.alt || "Gallery image"}
+              draggable="false"
+              oncontextmenu="return false;"
+              class="w-full h-auto rounded-lg shadow-sm group-hover:shadow-md transition-all duration-300 select-none"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
 
-  {/* LIGHTBOX OVERLAY */}
-  <div 
-    id="lightbox" 
-    class="fixed inset-0 z-50 hidden bg-black/95 flex items-center justify-center p-4 cursor-zoom-out opacity-0 transition-opacity duration-300"
-  >
-    {/* Close Button */}
-    <button class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 z-50">&times;</button>
-    
-    {/* THE LARGE IMAGE */}
-    <img 
-      id="lightbox-img" 
-      src="" 
-      alt="Full screen view" 
-      /* SECURITY ADDITION:
-         pointer-events-none: Makes the image "ghost-like". 
-         Right-clicking this will click the background div instead.
-         select-none: Prevents text selection highlight.
-      */
-      class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-sm pointer-events-none select-none"
-    />
-  </div>
-</section>
+    <div
+      id="lightbox"
+      class="fixed inset-0 z-50 hidden bg-black/95 flex items-center justify-center p-4 cursor-zoom-out opacity-0 transition-opacity duration-300"
+    >
+      <button class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 z-50">&times;</button>
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Full screen view"
+        class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-sm pointer-events-none select-none"
+      />
+    </div>
+  </section>
+)}
 
 <script>
-  const grid = document.getElementById('gallery-grid');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
+  const grid = document.getElementById('gallery-grid') as HTMLElement | null;
+  const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
 
   if (grid) {
-    grid.addEventListener('click', (e) => {
-      const clickedImage = e.target.closest('img');
+    grid.addEventListener('click', (e: Event) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+      const clickedImage = target.closest('img') as HTMLImageElement | null;
       if (!clickedImage) return;
 
       const fullSizeUrl = clickedImage.getAttribute('data-full');
-      
-      if (fullSizeUrl) {
-        lightboxImg.src = fullSizeUrl; 
-        lightbox.classList.remove('hidden'); 
+
+      if (fullSizeUrl && lightboxImg && lightbox) {
+        lightboxImg.src = fullSizeUrl;
+        lightbox.classList.remove('hidden');
         setTimeout(() => {
           lightbox.classList.remove('opacity-0');
         }, 10);
@@ -95,10 +79,11 @@ if (!galleryData) return null;
 
   if (lightbox) {
     lightbox.addEventListener('click', () => {
+      if (!lightbox) return;
       lightbox.classList.add('opacity-0');
       setTimeout(() => {
         lightbox.classList.add('hidden');
-        lightboxImg.src = ''; 
+        if (lightboxImg) lightboxImg.src = '';
       }, 300);
     });
   }

@@ -1,4 +1,3 @@
-// studio/schemaTypes/features.js
 export default {
   name: 'features',
   title: 'Feature Grid',
@@ -14,7 +13,6 @@ export default {
       name: 'items',
       title: 'Feature Items',
       type: 'array',
-      // This limits the user to 3 items to preserve the layout design
       validation: Rule => Rule.max(3).warning('The design looks best with 3 items.'),
       of: [
         {

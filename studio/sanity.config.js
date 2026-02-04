@@ -4,10 +4,8 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 
-// Define the singleton document types
 const singletonTypes = new Set(['siteSettings', 'homePage'])
 
-// Define the raw data types to hide from the main list
 const hiddenTypes = new Set(['hero', 'gallery', 'features'])
 const hiddenFromRoot = new Set([...singletonTypes, ...hiddenTypes])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])

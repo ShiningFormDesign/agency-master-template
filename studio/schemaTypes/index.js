@@ -1,6 +1,13 @@
-import hero from './hero'
 import siteSettings from './siteSettings'
+import homePage from './homePage' // Add this
+import hero from './hero'
+import features from './features'
 import gallery from './gallery'
-import features from './features' // <--- Import
 
-export const schemaTypes = [hero, siteSettings, gallery, features] // <--- Add
+export const schemaTypes = [
+  siteSettings,
+  homePage, // Add this
+  hero,
+  features,
+  gallery,
+]
