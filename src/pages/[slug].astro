@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+import RenderModules from '../components/RenderModules.astro';
+import { MODULES_QUERY } from '../utils/queries';
+
+export async function getStaticPaths() {
+  const pages = await sanityClient.fetch(`*[_type == "page"]{ "params": { "slug": slug.current } }`);
+  return pages;
+}
+
+const builder = imageUrlBuilder(sanityClient);
+const urlFor = (source: any) => builder.image(source);
+const { slug } = Astro.params;
+
+const pageData = await sanityClient.fetch(`*[_type == "page" && slug.current == $slug][0]{
+  title,
+  seo { metaTitle, metaDescription, shareImage { asset->{ url } } },
+  ${MODULES_QUERY}
+}`, { slug });
+
+if (!pageData) return Astro.redirect('/404');
+---
+
+<BaseLayout title={pageData.title} seo={pageData.seo}>
+  <RenderModules modules={pageData.modules} urlFor={urlFor} />
+</BaseLayout>

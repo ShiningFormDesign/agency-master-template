@@ -1,0 +1,38 @@
+---
+const { settings } = Astro.props;
+const currentYear = new Date().getFullYear();
+
+const footerBgStart = settings?.footerBg?.hex || 'transparent';
+const footerBgEnd = settings?.footerBgEnd?.hex;
+const footerOpacity = (settings?.footerOpacity ?? 100) / 100;
+const footerTextHex = settings?.footerText?.hex || 'var(--brand-text)';
+
+const footerBackground = footerBgEnd 
+  ? `linear-gradient(180deg, ${footerBgStart}, ${footerBgEnd})` 
+  : footerBgStart;
+---
+
+<footer 
+  class="w-full py-6 px-6 border-t border-white/10 mt-auto font-[family-name:var(--font-body)]" 
+  style={`background: ${footerBackground}; opacity: ${footerOpacity}; color: ${footerTextHex};`}
+>
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs opacity-70 tracking-widest uppercase text-center md:text-left">
+    
+    <p>
+      &copy; {currentYear} {settings?.title || "Shining Form Design"}. All Rights Reserved.
+    </p>
+
+    <p>
+      Designed by 
+      <a 
+        href="https://shiningform.com" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="font-bold hover:underline ml-1"
+      >
+        Shining Form Design
+      </a>
+    </p>
+
+  </div>
+</footer>

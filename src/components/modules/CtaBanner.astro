@@ -1,0 +1,86 @@
+---
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+
+const { 
+  heading, 
+  subheading, 
+  buttonText, 
+  buttonLink, 
+  backgroundImage,
+  headingColor,
+  subheadingColor,
+  buttonColor,
+  buttonTextColor,
+  backgroundColor,
+  backgroundColorEnd,
+  gradientAngle
+} = Astro.props;
+
+const builder = imageUrlBuilder(sanityClient);
+const urlFor = (source: any) => builder.image(source);
+
+const start = backgroundColor?.hex;
+const end = backgroundColorEnd?.hex;
+const angle = gradientAngle || 135;
+let localBgStyle = "";
+
+if (start) {
+  localBgStyle = end 
+    ? `background: linear-gradient(${angle}deg, ${start} 0%, ${end} 100%) !important;` 
+    : `background: ${start} !important;`;
+}
+
+const headHex = headingColor?.hex || 'inherit';
+const subHex = subheadingColor?.hex || 'inherit';
+const btnBgHex = buttonColor?.hex || 'var(--brand-secondary)';
+const btnTextHex = buttonTextColor?.hex || '#ffffff';
+---
+
+<section 
+  class="py-32 relative overflow-hidden"
+  style={localBgStyle}
+>
+  {backgroundImage && (
+    <div class="absolute inset-0 opacity-30 pointer-events-none">
+      <img 
+        src={urlFor(backgroundImage).width(2000).auto('format').url()} 
+        alt="Background Overlay" 
+        class="w-full h-full object-cover" 
+        loading="lazy" 
+      />
+    </div>
+  )}
+    
+  <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+    <div class="max-w-3xl text-left">
+      {heading && (
+        <h2 
+          class="text-4xl md:text-6xl font-bold mb-6 font-[family-name:var(--font-heading)] leading-tight"
+          style={`color: ${headHex};`}
+        >
+          {heading}
+        </h2>
+      )}
+        
+      {subheading && (
+        <p 
+          class="text-lg md:text-xl mb-12 max-w-2xl opacity-90 font-[family-name:var(--font-body)] leading-relaxed"
+          style={`color: ${subHex};`}
+        >
+          {subheading}
+        </p>
+      )}
+        
+      {buttonText && buttonLink && (
+        <a 
+          href={buttonLink} 
+          class="inline-block font-bold py-5 px-10 rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl font-[family-name:var(--font-body)] uppercase tracking-[0.2em] text-xs"
+          style={`background-color: ${btnBgHex}; color: ${btnTextHex};`}
+        >
+          {buttonText}
+        </a>
+      )}
+    </div>
+  </div>
+</section>

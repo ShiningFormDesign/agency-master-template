@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+import RenderModules from '../components/RenderModules.astro';
+import { MODULES_QUERY } from '../utils/queries';
+
+const builder = imageUrlBuilder(sanityClient);
+const urlFor = (source: any) => builder.image(source);
+
+const homeData = await sanityClient.fetch(`*[_id == "homePage"][0]{
+  title,
+  seo { metaTitle, metaDescription, shareImage { asset->{ url } } },
+  ${MODULES_QUERY}
+}`);
+---
+
+<BaseLayout title={homeData?.title} seo={homeData?.seo}>
+  <RenderModules modules={homeData?.modules} urlFor={urlFor} />
+</BaseLayout>
