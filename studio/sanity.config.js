@@ -17,9 +17,9 @@ export default defineConfig({
   title: 'Agency Studio',
 
   // STRICT ENV VARS: No hardcoded fallback IDs to prevent data leaks.
-  // Astro exposes environment variables to the client using the PUBLIC_ prefix.
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || '',
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
+  // Sanity strictly requires the SANITY_STUDIO_ prefix for environment variables.
+  projectId: import.meta.env.SANITY_STUDIO_PROJECT_ID || '',
+  dataset: import.meta.env.SANITY_STUDIO_DATASET || 'production',
 
   plugins: [
     structureTool({
