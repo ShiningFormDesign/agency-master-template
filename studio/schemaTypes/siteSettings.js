@@ -4,20 +4,6 @@ export default {
   type: 'document',
   fields: [
     { name: 'title', title: 'Site Title', type: 'string' },
-    {
-      name: 'designerName',
-      title: 'Designer Name',
-      type: 'string',
-      description: 'Agency name shown in footer credits.',
-      initialValue: 'Shining Form Design'
-    },
-    {
-      name: 'designerUrl',
-      title: 'Designer URL',
-      type: 'url',
-      description: 'Agency website link shown in footer credits.',
-      initialValue: 'https://shiningform.com'
-    },
     { name: 'logo', title: 'Logo', type: 'image', options: { hotspot: true } },
     { name: 'favicon', title: 'Favicon', type: 'image', options: { hotspot: true } },
     { name: 'seo', title: 'Global SEO Fallback', type: 'seo', options: { collapsible: true, collapsed: true } },

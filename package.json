@@ -1,7 +1,7 @@
 {
   "name": "client-site-template",
   "description": "Custom Astro + Sanity build.",
-  "author": "Shining Form Design",
+  "author": "",
   "type": "module",
   "version": "1.0.0",
   "scripts": {

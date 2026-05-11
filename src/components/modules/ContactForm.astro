@@ -30,6 +30,9 @@ const headHex = headingColor?.hex || '#ffffff';
 const subHex = subheadingColor?.hex || '#ffffff';
 const btnBg = buttonColor?.hex || '#ffffff';
 const btnText = buttonTextColor?.hex || '#000000';
+
+// Dynamic redirect URL for Web3Forms
+const redirectUrl = Astro.url.origin + "/thanks";
 ---
 
 <section class="py-24 px-6 md:px-12" style={localBgStyle}>
@@ -59,7 +62,7 @@ const btnText = buttonTextColor?.hex || '#000000';
     <div class="w-full lg:w-2/3 bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-2xl shadow-2xl border border-white/10">
       <form action="https://api.web3forms.com/submit" method="POST" class="space-y-8">
         <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY}>
-        <input type="hidden" name="redirect" value="https://shiningform.com/thanks">
+        <input type="hidden" name="redirect" value={redirectUrl}>
         <input type="hidden" name="subject" value="New Website Inquiry">
         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
@@ -93,7 +96,7 @@ const btnText = buttonTextColor?.hex || '#000000';
             rows="4" 
             required 
             class="w-full bg-white/5 border-b border-white/20 px-0 py-3 text-white focus:outline-none focus:border-[var(--brand-primary)] transition-colors placeholder:text-white/20 resize-none" 
-            placeholder="How can I help you?"
+            placeholder="How can we help you?"
           ></textarea>
         </div>
 

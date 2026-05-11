@@ -42,13 +42,27 @@ catch {
 
 Set-Location $OriginalLocation
 
-# 4. Automate the Local Environment
+# 4. Config Injection (Regex Overwrite)
+Write-Host "`nInjecting Project ID into Sanity config files..." -ForegroundColor Green
+
+$SanityConfigPath = "studio/sanity.config.js"
+$SanityCliPath = "studio/sanity.cli.js"
+
+# Update sanity.config.js
+(Get-Content $SanityConfigPath) -replace "import\.meta\.env\.SANITY_STUDIO_PROJECT_ID \|\| ''", "'$ProjectId'" | Set-Content $SanityConfigPath -Encoding UTF8
+(Get-Content $SanityConfigPath) -replace "import\.meta\.env\.SANITY_STUDIO_DATASET \|\| 'production'", "'$Dataset'" | Set-Content $SanityConfigPath -Encoding UTF8
+
+# Update sanity.cli.js
+(Get-Content $SanityCliPath) -replace "process\.env\.SANITY_STUDIO_PROJECT_ID \|\| ''", "'$ProjectId'" | Set-Content $SanityCliPath -Encoding UTF8
+(Get-Content $SanityCliPath) -replace "process\.env\.SANITY_STUDIO_DATASET \|\| 'production'", "'$Dataset'" | Set-Content $SanityCliPath -Encoding UTF8
+
+# 5. Automate the Local Environment (Astro Frontend)
 Write-Host "`nGenerating local .env file..." -ForegroundColor Green
 $envContent = @"
 PUBLIC_SANITY_PROJECT_ID="$ProjectId"
 PUBLIC_SANITY_DATASET="$Dataset"
 "@
-Set-Content -Path ".env" -Value $envContent
+Set-Content -Path ".env" -Value $envContent -Encoding UTF8
 
 Write-Host "`n------------------------------------------"
 Write-Host "SUCCESS! Client Project is Ready." -ForegroundColor Cyan

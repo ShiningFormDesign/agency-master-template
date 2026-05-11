@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap: https://[CLIENT-DOMAIN].com/sitemap-index.xml
+# Update this domain for each new client
+Sitemap: https://newclientdomain.com/sitemap-index.xml

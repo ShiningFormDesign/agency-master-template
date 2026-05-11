@@ -1,4 +1,4 @@
-import { defineConfig } from 'sanity'
+﻿import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
@@ -14,18 +14,18 @@ const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
   name: 'default',
-  title: 'Agency Studio',
+  title: 'Content Studio',
 
   // STRICT ENV VARS: No hardcoded fallback IDs to prevent data leaks.
   // Sanity strictly requires the SANITY_STUDIO_ prefix for environment variables.
-  projectId: import.meta.env.SANITY_STUDIO_PROJECT_ID || '',
-  dataset: import.meta.env.SANITY_STUDIO_DATASET || 'production',
+  projectId: 's7kj4a9h',
+  dataset: 'production',
 
   plugins: [
     structureTool({
       structure: (S) =>
         S.list()
-          .title('Agency Dashboard')
+          .title('Content Dashboard')
           .items([
             // Site Settings Singleton
             S.listItem()

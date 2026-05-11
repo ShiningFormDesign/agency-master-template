@@ -25,8 +25,8 @@ const navBackground = navBgEnd
     {/* Logo / Title Area */}
     <a href="/" class="flex-shrink-0 font-black text-2xl tracking-tighter font-[family-name:var(--font-heading)] transition-transform hover:scale-105" style="color: var(--nav-text);">
       {settings?.logo ? 
-        <img src={urlFor(settings.logo).height(120).auto('format').url()} alt={settings.title} class="h-12 w-auto object-contain" /> 
-        : <span>{settings?.title}</span>
+        <img src={urlFor(settings.logo).height(120).auto('format').url()} alt={settings?.title || "Client Brand"} class="h-12 w-auto object-contain" /> 
+        : <span>{settings?.title || "Client Brand"}</span>
       }
     </a>
 
